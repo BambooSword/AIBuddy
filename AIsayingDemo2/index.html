@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能翻译助手</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <h1><i class="fas fa-language"></i> <span data-i18n="app_title">智能翻译助手</span></h1>
+            <div class="header-controls">
+                <div class="language-selector">
+                    <select id="sourceLang">
+                        <option value="zh">中文</option>
+                        <option value="en">English</option>
+                        <option value="cantonese">广东话</option>
+                        <option value="arabic">العربية</option>
+                    </select>
+                    <button class="swap-btn" id="swapLang" title="切换语言">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+                    <select id="targetLang">
+                        <option value="en">English</option>
+                        <option value="zh">中文</option>
+                        <option value="cantonese">广东话</option>
+                        <option value="arabic">العربية</option>
+                    </select>
+                </div>
+                <button class="settings-btn" id="settingsBtn" title="设置">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <!-- 输入区域 -->
+            <div class="input-section">
+                <div class="input-container">
+                    <div class="input-header">
+                        <span class="input-label" data-i18n="input_text">输入文本</span>
+                        <div class="input-controls">
+                            <button class="voice-btn" id="voiceInput" title="语音输入">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="clear-btn" id="clearInput" title="清除">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <textarea 
+                        id="inputText" 
+                        data-i18n-placeholder="input_placeholder"
+                        placeholder="请输入要翻译的文本，或点击麦克风进行语音输入..."
+                        rows="4"
+                    ></textarea>
+                    <div class="input-footer">
+                        <span class="char-count">0/500</span>
+                        <button class="translate-btn" id="translateBtn">
+                            <i class="fas fa-language"></i>
+                            <span data-i18n="translate">翻译</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 翻译结果区域 -->
+            <div class="result-section">
+                <div class="result-container">
+                    <div class="result-header">
+                        <span class="result-label" data-i18n="translation_result">翻译结果</span>
+                        <div class="result-controls">
+                            <button class="play-btn" id="playResult" title="播放">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                            <button class="favorite-btn" id="favoriteBtn" title="收藏">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="copy-btn" id="copyResult" title="复制">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="result-content" id="resultContent">
+                        <div class="placeholder-text">
+                            <i class="fas fa-arrow-right"></i>
+                            <p data-i18n="result_placeholder">翻译结果将在这里显示</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 底部功能区域 -->
+        <footer class="footer">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="history">
+                    <i class="fas fa-history"></i>
+                    <span data-i18n="history">历史记录</span>
+                </button>
+                <button class="tab-btn" data-tab="favorites">
+                    <i class="fas fa-heart"></i>
+                    <span data-i18n="favorites">收藏夹</span>
+                </button>
+            </div>
+            
+            <div class="tab-content">
+                <!-- 历史记录 -->
+                <div class="tab-panel active" id="historyPanel">
+                    <div class="history-list" id="historyList">
+                        <div class="history-item">
+                            <div class="history-text">
+                                <div class="source-text">Hello, how are you?</div>
+                                <div class="target-text">你好，你好吗？</div>
+                            </div>
+                            <div class="history-actions">
+                                <button class="history-play" title="播放">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                                <button class="history-favorite" title="收藏">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-text">
+                                <div class="source-text">今天天气很好</div>
+                                <div class="target-text">The weather is nice today</div>
+                            </div>
+                            <div class="history-actions">
+                                <button class="history-play" title="播放">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                                <button class="history-favorite" title="收藏">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 收藏夹 -->
+                <div class="tab-panel" id="favoritesPanel">
+                    <div class="favorites-list" id="favoritesList">
+                        <div class="favorite-item">
+                            <div class="favorite-text">
+                                <div class="source-text">Thank you very much</div>
+                                <div class="target-text">非常感谢</div>
+                            </div>
+                            <div class="favorite-actions">
+                                <button class="favorite-play" title="播放">
+                                    <i class="fas fa-volume-up"></i>
+                                </button>
+                                <button class="favorite-remove" title="删除">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 设置面板 -->
+    <div class="settings-overlay" id="settingsOverlay">
+        <div class="settings-panel">
+            <div class="settings-header">
+                <h2 data-i18n="settings">设置</h2>
+                <button class="close-btn" id="closeSettings">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="settings-content">
+                <div class="setting-group">
+                    <h3 data-i18n="interface_language">界面语言</h3>
+                    <div class="setting-item">
+                        <label for="interfaceLang" data-i18n="select_language">选择语言</label>
+                        <select id="interfaceLang">
+                            <option value="zh">中文</option>
+                            <option value="en">English</option>
+                            <option value="cantonese">广东话</option>
+                            <option value="arabic">العربية</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <h3 data-i18n="translation_settings">翻译设置</h3>
+                    <div class="setting-item">
+                        <label for="autoTranslate">
+                            <input type="checkbox" id="autoTranslate">
+                            <span data-i18n="auto_translate">自动翻译</span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label for="saveHistory">
+                            <input type="checkbox" id="saveHistory" checked>
+                            <span data-i18n="save_history">保存历史记录</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <h3 data-i18n="voice_settings">语音设置</h3>
+                    <div class="setting-item">
+                        <label for="voiceSpeed" data-i18n="voice_speed">语音速度</label>
+                        <input type="range" id="voiceSpeed" min="0.5" max="2" step="0.1" value="0.8">
+                        <span class="range-value" id="voiceSpeedValue">0.8</span>
+                    </div>
+                    <div class="setting-item">
+                        <label for="autoPlay">
+                            <input type="checkbox" id="autoPlay">
+                            <span data-i18n="auto_play">自动播放翻译结果</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <h3 data-i18n="appearance">外观</h3>
+                    <div class="setting-item">
+                        <label for="theme" data-i18n="theme">主题</label>
+                        <select id="theme">
+                            <option value="light" data-i18n="light_theme">浅色主题</option>
+                            <option value="dark" data-i18n="dark_theme">深色主题</option>
+                            <option value="auto" data-i18n="auto_theme">跟随系统</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-footer">
+                <button class="save-btn" id="saveSettings">
+                    <i class="fas fa-save"></i>
+                    <span data-i18n="save">保存</span>
+                </button>
+                <button class="reset-btn" id="resetSettings">
+                    <i class="fas fa-undo"></i>
+                    <span data-i18n="reset">重置</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 语音输入状态指示器 -->
+    <div class="voice-indicator" id="voiceIndicator">
+        <div class="voice-animation">
+            <div class="voice-wave"></div>
+            <div class="voice-wave"></div>
+            <div class="voice-wave"></div>
+        </div>
+        <p data-i18n="recording">正在录音...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
